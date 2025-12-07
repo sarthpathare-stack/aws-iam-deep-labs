@@ -1,4 +1,4 @@
-Hi I am Sarth studying in 9th Grader
+Hi I am Sarth studying as a 9th Grader
 
 This is my first repository that I created to display projects learnt.
 
