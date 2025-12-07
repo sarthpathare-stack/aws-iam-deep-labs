@@ -1,0 +1,48 @@
+SCP Policy Evaluator + Region Lockdown Engine — Summary
+
+This project is a Python-based simulator that evaluates AWS Service Control Policies (SCPs) against resource requests.
+It models how AWS Organizations enforce policy-based restrictions such as:
+
+Region lockouts
+
+Explicit Deny overrides
+
+Action and resource pattern matching
+
+SCP condition checks
+
+Misconfiguration detection
+
+The engine loads SCPs from files/strings, interprets statements, checks matching conditions, and returns a detailed evaluation report with reasons, denying rules, and warnings.
+It also includes an example SCP policy and multiple test cases to demonstrate the logic.
+
+Key Features
+
+Parse and load SCP JSON policies
+
+Evaluate actions, resources, and conditions
+
+Simulate region lockdown rules
+
+Support Action, Resource, NotAction, NotResource
+
+Wildcard pattern matching for actions/ARNs
+
+Source IP and region conditions
+
+Misconfiguration detector for overly permissive rules
+
+Built-in interactive testing mode
+
+Example SCP + ready-made test cases
+
+Purpose
+
+This project is designed as a learning simulation to help understand how SCPs work in AWS Organizations.
+It helps visualize how denies take precedence, how region restrictions behave, and how policies influence resource creation.
+
+⚠️ Important Note
+
+This project is not production-grade.
+It does not fully represent AWS’s internal SCP evaluation engine.
+It is intentionally simplified to demonstrate my knowledge of AWS Organizations, IAM, SCP logic, and Python programming.
