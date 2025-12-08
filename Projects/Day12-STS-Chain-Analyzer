@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""
+STS (Security Token Service) Chain Analyzer
+Core Requirements Only
+"""
+
+print("=" * 60)
+print("STS CHAIN ANALYZER")
+print("=" * 60)
+
+# 1. LOAD STS ASSUME ROLE CHAIN
+print("\n[1] Loading STS Assume Role Chain...")
+sts_chain = [
+    {
+        "arn": "arn:aws:iam::111111111111:user/alice",
+        "type": "IAM User",
+        "timestamp": "2023-10-01T09:00:00Z",
+        "action": "AssumeRole",
+        "target_role": "arn:aws:iam::111111111111:role/DevRole"
+    },
+    {
+        "arn": "arn:aws:iam::111111111111:role/DevRole",
+        "type": "IAM Role",
+        "timestamp": "2023-10-01T09:00:01Z",
+        "action": "AssumeRole",
+        "target_role": "arn:aws:iam::222222222222:role/CrossAccountRole"
+    },
+    {
+        "arn": "arn:aws:iam::222222222222:role/CrossAccountRole",
+        "type": "IAM Role",
+        "timestamp": "2023-10-01T09:00:02Z",
+        "action": "AssumeRole",
+        "target_role": "arn:aws:iam::333333333333:role/AdminRole"
+    },
+    {
+        "arn": "arn:aws:iam::333333333333:role/AdminRole",
+        "type": "IAM Role",
+        "timestamp": "2023-10-01T09:00:03Z",
+        "action": "s3:DeleteBucket",
+        "target_resource": "arn:aws:s3:::critical-data-bucket"
+    }
+]
+
+print(f"Chain Length: {len(sts_chain)} hops")
+for i, hop in enumerate(sts_chain, 1):
+    print(f"  Hop {i}: {hop['arn']} → {hop.get('target_role', hop.get('target_resource', 'N/A'))}")
+
+# 2. ANALYZE CHAIN PROPERTIES
+print("\n[2] Analyzing Chain Properties...")
+
+# Extract accounts from ARNs
+accounts = []
+for hop in sts_chain:
+    # Extract account ID from ARN (format: arn:aws:iam::ACCOUNT_ID:...)
+    if "::" in hop["arn"]:
+        parts = hop["arn"].split(":")
+        if len(parts) >= 5:
+            accounts.append(parts[4])
+
+unique_accounts = list(set(accounts))
+print(f"Accounts Involved: {len(unique_accounts)} → {unique_accounts}")
+
+# Count role types
+role_count = sum(1 for hop in sts_chain if "role" in hop["type"].lower())
+user_count = sum(1 for hop in sts_chain if "user" in hop["type"].lower())
+print(f"IAM Entities: {role_count} roles, {user_count} user")
+
+# 3. DETECT SECURITY ISSUES
+print("\n[3] Detecting Security Issues...")
+
+issues = []
+warnings = []
+
+# Issue 1: Chain Length
+if len(sts_chain) > 3:
+    issues.append(f"Chain too long ({len(sts_chain)} hops) - increases attack surface")
+
+# Issue 2: Cross-account hops
+account_transitions = []
+for i in range(len(sts_chain) - 1):
+    current = sts_chain[i]["arn"]
+    next_item = sts_chain[i + 1]
+    
+    # Extract account IDs
+    current_acct = current.split(":")[4] if "::" in current else "unknown"
+    
+    if "target_role" in next_item:
+        next_acct = next_item["target_role"].split(":")[4] if "::" in next_item["target_role"] else "unknown"
+        
+        if current_acct != next_acct:
+            account_transitions.append(f"{current_acct} → {next_acct}")
+
+if account_transitions:
+    print(f"Cross-account transitions: {len(account_transitions)}")
+    for transition in account_transitions:
+        print(f"  - {transition}")
+    
+    if len(account_transitions) > 2:
+        issues.append(f"Too many cross-account hops: {len(account_transitions)}")
+
+# Issue 3: Admin role at end
+final_action = sts_chain[-1]
+if "AdminRole" in final_action["arn"]:
+    issues.append("Admin role used at end of chain - excessive privileges")
+
+# Issue 4: Sensitive action
+if "Delete" in final_action.get("action", ""):
+    issues.append("Delete action at end of chain - high risk")
+
+# Issue 5: Time analysis (simplified)
+timestamps = [hop["timestamp"] for hop in sts_chain]
+print(f"Time range: {timestamps[0]} to {timestamps[-1]}")
+
+# If chain took too long
+if len(timestamps) > 1:
+    # Simple time check (just for demo)
+    if timestamps[-1] > "2023-10-01T09:10:00Z":  # 10 minutes later
+        warnings.append("Chain duration may be too long")
+
+# 4. CALCULATE RISK SCORE
+print("\n[4] Calculating Risk Score...")
+
+risk_score = 0
+risk_factors = []
+
+# Factor 1: Chain length
+chain_length_risk = len(sts_chain) * 10
+risk_score += chain_length_risk
+risk_factors.append(f"Chain length: +{chain_length_risk}")
+
+# Factor 2: Cross-account
+cross_account_risk = len(account_transitions) * 20
+risk_score += cross_account_risk
+risk_factors.append(f"Cross-account hops: +{cross_account_risk}")
+
+# Factor 3: Admin privileges
+if "Admin" in sts_chain[-1]["arn"]:
+    admin_risk = 30
+    risk_score += admin_risk
+    risk_factors.append(f"Admin privileges: +{admin_risk}")
+
+# Factor 4: Destructive action
+if any(action in final_action.get("action", "") for action in ["Delete", "Modify", "Update"]):
+    destructive_risk = 25
+    risk_score += destructive_risk
+    risk_factors.append(f"Destructive action: +{destructive_risk}")
+
+print(f"Risk Factors:")
+for factor in risk_factors:
+    print(f"  {factor}")
+
+# 5. FINAL OUTPUT
+print("\n" + "=" * 60)
+print("STS CHAIN ANALYSIS RESULT")
+print("=" * 60)
+
+print(f"\nChain Summary:")
+print(f"- Length: {len(sts_chain)} hops")
+print(f"- Accounts: {len(unique_accounts)}")
+print(f"- Final Action: {sts_chain[-1].get('action', 'N/A')}")
+print(f"- Risk Score: {risk_score}/100")
+
+if risk_score > 70:
+    risk_level = "🔴 HIGH RISK"
+elif risk_score > 40:
+    risk_level = "🟡 MEDIUM RISK"
+else:
+    risk_level = "🟢 LOW RISK"
+
+print(f"\nRisk Level: {risk_level}")
+
+if issues:
+    print(f"\n❌ Security Issues Found ({len(issues)}):")
+    for issue in issues:
+        print(f"  - {issue}")
+
+if warnings:
+    print(f"\n⚠️  Warnings ({len(warnings)}):")
+    for warning in warnings:
+        print(f"  - {warning}")
+
+if not issues and not warnings:
+    print(f"\n✅ Chain appears secure")
+
+print("\n" + "=" * 60)
