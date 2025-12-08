@@ -1,0 +1,37 @@
+Project Summary: STS Chain Analyzer
+Educational Purpose
+A learning tool that demonstrates how to analyze AWS STS (Security Token Service) assume-role permission chains for security risks. Shows the concept of tracking multi-hop role assumptions across accounts.
+
+Core Function
+Analyzes chains of AssumeRole API calls
+
+Detects security issues like long chains and privilege escalation
+
+Calculates risk scores based on chain properties
+
+Identifies cross-account transitions
+
+Key Checks
+Chain Length (> 3 hops = risky)
+
+Cross-Account Movements (harder to audit)
+
+Admin Privileges at End (excessive permissions)
+
+Destructive Actions (Delete/Modify operations)
+
+Chain Duration (time-based anomalies)
+
+⚠️ Important Note
+This is a concept demonstration only - not a production tool. Real STS analysis requires AWS CloudTrail logs, proper IAM analysis, and integration with security services like GuardDuty.
+
+Educational Value
+Shows understanding of:
+
+STS assume-role security implications
+
+Permission chain analysis basics
+
+Risk quantification for IAM
+
+Multi-account security considerations
