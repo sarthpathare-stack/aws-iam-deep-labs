@@ -1,0 +1,71 @@
+ABAC Tag-Match Evaluator + Zero Trust Enforcer — Summary
+
+This project is a lightweight Python script that simulates Attribute-Based Access Control (ABAC) and Zero-Trust validation using simple tag-matching logic between a user and a resource.
+
+It demonstrates how real-world security engines validate identity attributes (user tags) against resource attributes before allowing access.
+
+What the Script Does
+
+Loads User Tags
+Represents identity attributes such as:
+
+Environment
+
+Owner
+
+Team
+
+Department
+
+Loads Resource Tags
+Represents metadata attached to cloud resources.
+
+Applies Matching Rules
+Performs exact-match checks for:
+
+Environment
+
+Owner
+
+Team
+
+Detects Mismatches
+Lists any user/resource tag differences.
+
+Zero-Trust Evaluation
+
+If all required attributes match → Access ALLOWED
+
+If any mismatch exists → Access DENIED
+
+Outputs a Clean Result
+Includes match/mismatch reasoning and Zero-Trust enforcement result.
+
+Key Learning Concepts Demonstrated
+
+Attribute-Based Access Control (ABAC)
+
+Identity-driven access controls
+
+Zero-Trust "never trust, always verify" principle
+
+Tag comparison logic
+
+Simple conditional evaluation
+
+Security decision reasoning
+
+⚠️ Important Note
+
+This is not production-grade security logic.
+It is a learning simulation designed to demonstrate my understanding of:
+
+ABAC fundamentals
+
+Tag matching
+
+Zero-Trust decision-making
+
+Python-based policy evaluation
+
+The script intentionally keeps the rules simple for educational clarity.
