@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""
+ABAC Tag-Match Evaluator + Zero Trust Enforcer
+Core Requirements Only
+"""
+
+print("=" * 60)
+print("ABAC TAG-MATCH EVALUATOR + ZERO TRUST ENFORCER")
+print("=" * 60)
+
+# 1. LOAD USER TAG SET
+print("\n[1] Loading User Tag Set...")
+user_tags = {
+    "Environment": "production",
+    "Owner": "alice@company.com",
+    "Team": "security",
+    "Department": "IT"
+}
+print(f"User Tags: {user_tags}")
+
+# 2. LOAD RESOURCE TAG SET
+print("\n[2] Loading Resource Tag Set...")
+resource_tags = {
+    "Environment": "production",
+    "Owner": "alice@company.com",
+    "Team": "security",
+    "Classification": "restricted"
+}
+print(f"Resource Tags: {resource_tags}")
+
+# 3. APPLY MATCHING RULES
+print("\n[3] Applying Matching Rules...")
+matches = []
+mismatches = []
+
+# Environment Rule: Must match exactly
+if user_tags.get("Environment") == resource_tags.get("Environment"):
+    matches.append("Environment matches")
+else:
+    mismatches.append(f"Environment mismatch: {user_tags.get('Environment')} != {resource_tags.get('Environment')}")
+
+# Owner Rule: Must match exactly
+if user_tags.get("Owner") == resource_tags.get("Owner"):
+    matches.append("Owner matches")
+else:
+    mismatches.append(f"Owner mismatch: {user_tags.get('Owner')} != {resource_tags.get('Owner')}")
+
+# Team Rule: Must match exactly
+if user_tags.get("Team") == resource_tags.get("Team"):
+    matches.append("Team matches")
+else:
+    mismatches.append(f"Team mismatch: {user_tags.get('Team')} != {resource_tags.get('Team')}")
+
+# 4. DETECT MISMATCHES
+print("\n[4] Detecting Mismatches...")
+if mismatches:
+    print(f"Found {len(mismatches)} mismatch(es)")
+else:
+    print("No mismatches found")
+
+# 5. EVALUATE
+print("\n[5] Evaluating...")
+
+# Check each required attribute
+required_attributes = ["Environment", "Owner", "Team"]
+all_match = True
+
+for attr in required_attributes:
+    user_value = user_tags.get(attr)
+    resource_value = resource_tags.get(attr)
+    
+    if user_value != resource_value:
+        all_match = False
+        print(f"  ❌ {attr}: {user_value} != {resource_value}")
+    else:
+        print(f"  ✅ {attr}: {user_value} == {resource_value}")
+
+# 6. OUTPUT
+print("\n" + "=" * 60)
+print("EVALUATION RESULT")
+print("=" * 60)
+
+# MATCH / MISMATCH
+if all_match:
+    print("\nRESULT: ✅ MATCH")
+    print("REASON: All required attributes match")
+    print("ZERO-TRUST ENFORCEMENT: Access ALLOWED")
+else:
+    print("\nRESULT: ❌ MISMATCH")
+    print("REASON: One or more attributes don't match")
+    print("ZERO-TRUST ENFORCEMENT: Access DENIED")
+
+print("\n" + "=" * 60)
