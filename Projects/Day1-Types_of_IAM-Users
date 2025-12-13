@@ -1,316 +1,34 @@
-#!/usr/bin/env python3
 """
-IAM USER vs ROOT USER COMPARISON
-=================================
-Shows key differences between IAM User and Root User
+Day 1 - IAM Foundations
+Simple simulation of IAM identity logic
 """
 
-import os
-import time
-
-def clear_screen():
-    """Clear terminal screen"""
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-def print_header():
-    """Print tool header"""
-    print("🔐" * 25)
-    print("🔐   IAM USER vs ROOT USER COMPARISON   🔐")
-    print("🔐" * 25)
-    print()
-
-def animate_text(text, delay=0.03):
-    """Animate text printing"""
-    for char in text:
-        print(char, end='', flush=True)
-        time.sleep(delay)
-    print()
-
-def show_comparison():
-    """Display the comparison table"""
-    print("=" * 70)
-    print("📊 COMPARISON TABLE")
-    print("=" * 70)
-    print()
-    
-    # Table data
-    features = [
-        ["", "IAM USER", "ROOT USER"],
-        ["-"*30, "-"*20, "-"*20],
-        ["🔐 ACCESS TYPE", "Granular permissions", "Full account access"],
-        ["📝 CREATION", "Created by admin/root", "Default account owner"],
-        ["💰 COST", "Free", "Free"],
-        ["🔄 MFA ENFORCEMENT", "Can be enforced", "Can be enabled"],
-        ["🔑 PASSWORD POLICY", "Follows IAM policy", "No policy (set manually)"],
-        ["👥 MULTIPLE", "Many users possible", "Only one per account"],
-        ["🚨 DELETE ACCOUNT", "❌ Cannot", "✅ Can delete AWS account"],
-        ["💳 BILLING ACCESS", "If granted permission", "✅ Full billing access"],
-        ["🌐 ROUTE 53 DOMAINS", "If granted permission", "✅ Full access"],
-        ["🔧 IAM MANAGEMENT", "If granted permission", "✅ Full IAM access"],
-        ["📞 SUPPORT TICKETS", "If granted permission", "✅ Create all tickets"],
-        ["🏷️ RESOURCE TAGS", "Can tag if permitted", "✅ Tag all resources"],
-        ["🔐 CREDENTIALS", "Password + Access Keys", "Password + Access Keys"],
-        ["🛡️ SECURITY", "Follows IAM policies", "Bypasses all policies"],
-        ["📊 CLOUDTRAIL LOGS", "Individual user logs", "Root user activity logs"],
-        ["⚡ RECOMMENDATION", "✅ USE FOR DAILY WORK", "🚫 USE ONLY WHEN REQUIRED"]
-    ]
-    
-    # Print table
-    for row in features:
-        print(f"{row[0]:30} | {row[1]:20} | {row[2]:20}")
-    
-    print()
-
-def show_when_to_use():
-    """Show when to use each"""
-    print("=" * 70)
-    print("🎯 WHEN TO USE EACH")
-    print("=" * 70)
-    print()
-    
-    print("✅ USE IAM USER FOR:")
-    print("-" * 30)
-    print("• Daily administration work")
-    print("• Developer access")
-    print("• CI/CD pipelines")
-    print("• Application access")
-    print("• Team member access")
-    print("• Regular AWS console access")
-    print()
-    
-    print("🚨 USE ROOT USER ONLY FOR:")
-    print("-" * 30)
-    print("• Initial AWS account setup")
-    print("• Changing AWS support plan")
-    print("• Restoring IAM user permissions")
-    print("• Closing AWS account")
-    print("• Changing account settings")
-    print("• Viewing billing information")
-    print()
-
-def show_security_checklist():
-    """Show security checklist"""
-    print("=" * 70)
-    print("🛡️ SECURITY CHECKLIST")
-    print("=" * 70)
-    print()
-    
-    checklist = [
-        "🔒 Enable MFA on Root User (IMPORTANT!)",
-        "📧 Use separate email for Root User",
-        "🔑 Delete Root User access keys",
-        "👤 Create IAM admin users for daily work",
-        "📝 Use strong password policies",
-        "🔄 Regularly rotate IAM user credentials",
-        "📊 Enable CloudTrail logging",
-        "🚫 Never share Root User credentials",
-        "📱 Use hardware MFA if possible",
-        "📋 Review IAM policies regularly"
-    ]
-    
-    for i, item in enumerate(checklist, 1):
-        print(f"{i:2}. {item}")
-    
-    print()
-
-def show_danger_zones():
-    """Show dangerous root user actions"""
-    print("=" * 70)
-    print("⚠️  DANGEROUS ROOT USER ACTIONS")
-    print("=" * 70)
-    print()
-    
-    dangers = [
-        "1. ❌ SHARING root credentials with team members",
-        "2. ❌ USING root for daily tasks",
-        "3. ❌ STORING root password in plain text",
-        "4. ❌ DISABLING MFA on root account",
-        "5. ❌ CREATING access keys for root",
-        "6. ❌ LOGGING IN from public computers",
-        "7. ❌ USING root in automation scripts",
-        "8. ❌ IGNORING root login alerts"
-    ]
-    
-    for danger in dangers:
-        print(danger)
-    
-    print()
-
-def show_quick_test():
-    """Quick test to check understanding"""
-    print("=" * 70)
-    print("🧪 QUICK TEST")
-    print("=" * 70)
-    print()
-    
-    questions = [
-        {
-            "q": "Who can delete an AWS account?",
-            "options": ["A) IAM User", "B) Root User", "C) Both", "D) Neither"],
-            "answer": "B"
-        },
-        {
-            "q": "Which should you use for daily work?",
-            "options": ["A) IAM User", "B) Root User", "C) Either is fine", "D) Neither"],
-            "answer": "A"
-        },
-        {
-            "q": "How many root users per AWS account?",
-            "options": ["A) 1", "B) 5", "C) Unlimited", "D) 0"],
-            "answer": "A"
-        }
-    ]
-    
-    score = 0
-    for i, q in enumerate(questions, 1):
-        print(f"Q{i}. {q['q']}")
-        for opt in q['options']:
-            print(f"   {opt}")
-        
-        answer = input("\nYour answer (A/B/C/D): ").upper()
-        
-        if answer == q['answer']:
-            print("✅ Correct!")
-            score += 1
-        else:
-            print(f"❌ Wrong! Correct answer: {q['answer']}")
-        
-        print()
-    
-    print(f"📊 Score: {score}/{len(questions)}")
-    
-    if score == len(questions):
-        print("🎉 Excellent! You understand IAM vs Root!")
-    elif score >= len(questions)//2:
-        print("👍 Good understanding!")
+def authenticate(identity_type):
+    if identity_type == "root":
+        return "Authenticated as ROOT (dangerous)"
+    elif identity_type == "user":
+        return "Authenticated as IAM User"
+    elif identity_type == "role":
+        return "Authenticated via IAM Role (STS)"
     else:
-        print("📚 Review the material above!")
-    
-    print()
+        return "Authentication failed"
 
-def main_menu():
-    """Display main menu"""
-    clear_screen()
-    print_header()
-    
-    print("📚 What would you like to see?")
-    print()
-    print("1. 📊 Comparison Table")
-    print("2. 🎯 When to Use Each")
-    print("3. 🛡️ Security Checklist")
-    print("4. ⚠️ Dangerous Actions")
-    print("5. 🧪 Quick Test")
-    print("6. 🔄 Show All")
-    print("0. 🚪 Exit")
-    print()
 
-def main():
-    """Main function"""
-    while True:
-        main_menu()
-        
-        choice = input("Enter choice (0-6): ").strip()
-        
-        clear_screen()
-        print_header()
-        
-        if choice == "1":
-            show_comparison()
-        elif choice == "2":
-            show_when_to_use()
-        elif choice == "3":
-            show_security_checklist()
-        elif choice == "4":
-            show_danger_zones()
-        elif choice == "5":
-            show_quick_test()
-        elif choice == "6":
-            show_comparison()
-            input("\nPress Enter to continue...")
-            clear_screen()
-            print_header()
-            show_when_to_use()
-            input("\nPress Enter to continue...")
-            clear_screen()
-            print_header()
-            show_security_checklist()
-            input("\nPress Enter to continue...")
-            clear_screen()
-            print_header()
-            show_danger_zones()
-            input("\nPress Enter to continue...")
-            clear_screen()
-            print_header()
-            show_quick_test()
-        elif choice == "0":
-            print("\n" + "=" * 50)
-            print("👋 Stay secure! Use IAM Users for daily work!")
-            print("=" * 50)
-            break
-        else:
-            print("❌ Invalid choice! Please try again.")
-            time.sleep(1)
-            continue
-        
-        if choice != "6":  # Don't ask when showing all
-            input("\nPress Enter to return to menu...")
-
-def quick_version():
-    """Quick one-page version"""
-    print("=" * 70)
-    print("🔐 IAM USER vs ROOT USER - CHEAT SHEET")
-    print("=" * 70)
-    print()
-    
-    print("IAM USER (Use this for daily work):")
-    print("-" * 40)
-    print("• 👤 Created by admin")
-    print("• 🔐 Granular permissions")
-    print("• 🆓 Free to create")
-    print("• ✅ Can enforce MFA")
-    print("• ❌ Cannot delete account")
-    print()
-    
-    print("ROOT USER (Use only when needed):")
-    print("-" * 40)
-    print("• 👑 Account owner")
-    print("• ⚡ Full access to everything")
-    print("• 🆓 Only one per account")
-    print("• 🚨 Can delete AWS account")
-    print("• 💳 Full billing access")
-    print()
-    
-    print("🔴 NEVER DO WITH ROOT USER:")
-    print("-" * 40)
-    print("1. ❌ Daily work")
-    print("2. ❌ Share credentials")
-    print("3. ❌ Disable MFA")
-    print("4. ❌ Create access keys")
-    print()
-    
-    print("✅ ALWAYS DO:")
-    print("-" * 40)
-    print("1. 🔒 Enable MFA on root")
-    print("2. 👤 Create IAM admin users")
-    print("3. 📊 Monitor CloudTrail logs")
-    print("4. 🚫 Lock away root credentials")
-    print()
-    print("=" * 70)
-
-# Run the tool
-if __name__ == "__main__":
-    clear_screen()
-    
-    # Ask for version
-    print("Choose version:")
-    print("1. 📖 Full interactive version")
-    print("2. 🚀 Quick cheat sheet")
-    
-    version = input("\nEnter choice (1 or 2): ").strip()
-    
-    clear_screen()
-    
-    if version == "1":
-        main()
+def authorize(identity_type):
+    if identity_type == "root":
+        return "Authorization: FULL ACCESS"
+    elif identity_type == "user":
+        return "Authorization: Depends on attached policies"
+    elif identity_type == "role":
+        return "Authorization: Temporary permissions via STS"
     else:
-        quick_version()
+        return "Authorization denied"
+
+
+# Simulation
+identity = "role"
+
+print("IAM Simulation")
+print("----------------")
+print(authenticate(identity))
+print(authorize(identity))
