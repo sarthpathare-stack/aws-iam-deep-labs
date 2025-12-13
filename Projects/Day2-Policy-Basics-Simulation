@@ -1,0 +1,34 @@
+"""
+Day 1 - IAM Foundations
+Simple simulation of IAM identity logic
+"""
+
+def authenticate(identity_type):
+    if identity_type == "root":
+        return "Authenticated as ROOT (dangerous)"
+    elif identity_type == "user":
+        return "Authenticated as IAM User"
+    elif identity_type == "role":
+        return "Authenticated via IAM Role (STS)"
+    else:
+        return "Authentication failed"
+
+
+def authorize(identity_type):
+    if identity_type == "root":
+        return "Authorization: FULL ACCESS"
+    elif identity_type == "user":
+        return "Authorization: Depends on attached policies"
+    elif identity_type == "role":
+        return "Authorization: Temporary permissions via STS"
+    else:
+        return "Authorization denied"
+
+
+# Simulation
+identity = "role"
+
+print("IAM Simulation")
+print("----------------")
+print(authenticate(identity))
+print(authorize(identity))
