@@ -1,0 +1,49 @@
+# Day 2 — IAM Policies Basics
+
+## What is an IAM Policy?
+An IAM policy is a JSON document that defines:
+- WHAT actions are allowed or denied
+- ON WHICH resources
+- UNDER WHICH conditions
+
+Policies do NOT grant access by default.
+Everything starts with an implicit deny.
+
+---
+
+## Types of IAM Policies
+### 1. Identity-Based Policies
+- Attached to users, groups, or roles
+- Most common policy type
+- Example: Allow EC2 actions for a role
+
+### 2. Resource-Based Policies
+- Attached directly to resources (S3, KMS, etc.)
+- Define who can access the resource
+- Used heavily for cross-account access
+
+---
+
+## Policy Structure
+Every policy contains:
+- Version
+- Statement
+  - Effect (Allow / Deny)
+  - Action
+  - Resource
+  - Condition (optional)
+
+---
+
+## Allow vs Deny
+- **Allow** grants permission
+- **Implicit Deny** exists if no allow is found
+- **Explicit Deny** always overrides allow
+
+---
+
+## Important Rule
+Policies do not stack like addition.
+AWS evaluates them logically.
+
+You must be explicitly allowed.
