@@ -1,0 +1,48 @@
+# Day 3 — IAM Policy Evaluation Logic
+
+## Why Policy Evaluation Matters
+IAM issues do not happen because policies are missing.
+They happen because multiple policies interact in complex ways.
+
+Understanding evaluation logic is the key to debugging IAM.
+
+---
+
+## Core Evaluation Rules
+1. AWS starts with an **implicit deny**
+2. All applicable policies are evaluated together
+3. If ANY explicit deny exists → final result is DENY
+4. If at least one allow exists AND no deny → ALLOW
+5. If no allow exists → DENY (implicit)
+
+---
+
+## Policies Evaluated Together
+AWS does NOT evaluate policies one by one.
+It evaluates the **union of all policies**.
+
+Sources include:
+- Identity policies
+- Resource policies
+- Session policies (later)
+- SCPs (later)
+- Permission boundaries (later)
+
+---
+
+## Deny Always Wins
+An explicit deny:
+- Overrides all allows
+- Cannot be overridden
+- Is final
+
+This rule never changes.
+
+---
+
+## Why IAM Feels Confusing
+- Multiple policies apply at once
+- Permissions look allowed but are denied
+- Denies are often hidden in other layers
+
+IAM is logical, not intuitive.
