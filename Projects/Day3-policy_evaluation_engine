@@ -1,0 +1,35 @@
+"""
+Day 3 - IAM Policy Evaluation Logic
+Simulating AWS-style policy evaluation
+"""
+
+def evaluate_policies(policies):
+    """
+    policies: list of policy effects ["Allow", "Deny", None]
+    """
+    if "Deny" in policies:
+        return "FINAL DECISION: DENY (explicit deny found)"
+    elif "Allow" in policies:
+        return "FINAL DECISION: ALLOW"
+    else:
+        return "FINAL DECISION: DENY (implicit deny)"
+
+
+# Simulations
+print("IAM Policy Evaluation Engine")
+print("-----------------------------")
+
+print("\nCase 1: Allow only")
+print(evaluate_policies(["Allow"]))
+
+print("\nCase 2: Allow + Deny")
+print(evaluate_policies(["Allow", "Deny"]))
+
+print("\nCase 3: No policies")
+print(evaluate_policies([]))
+
+print("\nCase 4: Multiple Allows")
+print(evaluate_policies(["Allow", "Allow"]))
+
+print("\nCase 5: Hidden Deny")
+print(evaluate_policies(["Allow", None, "Deny"]))
