@@ -1,0 +1,49 @@
+# Day 1 — IAM Foundations
+
+## What is IAM?
+IAM (Identity and Access Management) controls:
+- WHO can access AWS
+- WHAT actions they can perform
+- ON WHICH resources
+- UNDER WHICH conditions
+
+IAM is the security brain of AWS.
+
+---
+
+## Core IAM Components
+- **User**: A long-term human identity
+- **Group**: Collection of users (policy convenience)
+- **Role**: Temporary identity assumed by services or users
+- **Policy**: JSON document that defines permissions
+
+---
+
+## Authentication vs Authorization
+- **Authentication**: Who are you? (login, credentials)
+- **Authorization**: What are you allowed to do? (policies)
+
+IAM mostly handles **authorization**.
+
+---
+
+## Why Roles Are Better Than Users
+- No long-term credentials
+- Temporary access via STS
+- Safer for EC2, Lambda, cross-account access
+- Industry standard (users are discouraged)
+
+---
+
+## Root User (Danger Zone)
+- Root has unlimited power
+- Should never be used for daily work
+- Only for account-level actions
+- Must be protected with MFA
+
+---
+
+## Key Takeaways
+- IAM is not about permissions only — it's about identity design
+- Roles > Users in real-world architectures
+- Security starts with **who**, not **what**
