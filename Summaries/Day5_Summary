@@ -1,0 +1,65 @@
+Day 5 — IAM Roles & STS (AssumeRole Logic)
+Why IAM Roles Exist
+
+Roles solve a core problem:
+
+Long-term credentials are dangerous.
+
+Roles provide:
+
+Temporary credentials
+
+No permanent secrets
+
+Controlled trust
+
+Two Policies Control Role Usage
+
+Trust Policy → WHO can assume the role
+
+Permission Policy → WHAT the role can do
+
+Both must succeed.
+
+AssumeRole Evaluation Flow
+
+Caller requests AssumeRole
+
+Trust policy is evaluated
+
+If trust fails → stop immediately
+
+STS issues temporary credentials
+
+Role permissions are evaluated for actions
+
+Trust Policy Is NOT a Permission Policy
+
+Common mistake:
+
+“Trust policy gives permissions”
+
+False.
+
+Trust policy only answers:
+
+Can this principal become this role?
+
+Permissions decide actions after assumption.
+
+Why AssumeRole Fails
+
+Trust policy missing principal
+
+Wrong external ID
+
+Condition mismatch
+
+SCP blocks AssumeRole
+
+Mental Model
+
+Trust = door
+Permissions = room access
+
+Passing one without the other is useless.
