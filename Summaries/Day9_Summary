@@ -1,0 +1,35 @@
+Day 9 — Full STS & IAM Evaluation Flow
+Why Full Flow Matters
+IAM failures rarely come from one policy.
+They come from layers interacting.
+
+Simplified Evaluation Order
+
+SCPs (organization level)
+Trust policy
+STS token validity
+Permission boundary
+Identity policy
+Resource policy
+Failure at ANY step → DENY.
+Explicit Deny Is Absolute
+Cannot be overridde
+Stops evaluation immediately
+Applies across all layers
+
+Why Debugging IAM Is Hard:
+Policies are distributed
+Denies may be hidden
+Some layers are invisible (SCPs)
+Correct Debugging Mindset
+Never ask:
+“Why is this allowed?”
+Always ask:
+“Where is it being denied?”
+
+Final Truth
+
+IAM is not broken.
+Your mental model usually is.
+
+Once you understand the flow, IAM becomes predictable.
