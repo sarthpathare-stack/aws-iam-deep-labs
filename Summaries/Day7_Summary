@@ -1,0 +1,53 @@
+Day 7 — IAM Access Analyzer (Visibility, Not Control)
+What Access Analyzer Is
+
+Access Analyzer is not an enforcement tool.
+
+It:
+
+Analyzes policies
+
+Detects unintended access
+
+Generates findings
+
+It never blocks traffic.
+
+What It Detects
+
+Cross-account access
+
+Public access
+
+External principals
+
+Broad trust relationships
+
+Why It Matters
+
+Permissions can look valid but be dangerous.
+
+Access Analyzer answers:
+
+“Who CAN access this resource?”
+
+Not:
+
+“Who SHOULD access it?”
+
+Common Misconception
+
+Finding ≠ vulnerability
+Finding = visibility
+
+Security engineers decide what to fix.
+
+Best Use Case
+
+Use Access Analyzer:
+
+After policy changes
+
+During audits
+
+When onboarding new accounts
