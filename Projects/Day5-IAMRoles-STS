@@ -1,0 +1,25 @@
+"""
+Day 5 - IAM Roles and STS AssumeRole Simulation
+Learning-focused simulation (NOT production-grade)
+"""
+
+def assume_role(user, role_trust, role_permission):
+    if not role_trust:
+        return "DENIED: Trust policy does not allow this user"
+    if not role_permission:
+        return "DENIED: Role has no permissions"
+    return f"ALLOWED: {user} assumed role successfully"
+
+
+print("DAY 5 — IAM ROLE + STS ASSUME ROLE")
+print("----------------------------------")
+
+user = input("Enter user name: ")
+trust = input("Does trust policy allow this user? (yes/no): ").lower()
+permission = input("Does role have required permissions? (yes/no): ").lower()
+
+trust_allowed = trust == "yes"
+permission_allowed = permission == "yes"
+
+result = assume_role(user, trust_allowed, permission_allowed)
+print("\nRESULT:", result)
