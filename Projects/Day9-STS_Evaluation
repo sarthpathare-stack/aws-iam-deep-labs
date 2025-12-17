@@ -1,0 +1,27 @@
+"""
+Day 9 - STS Evaluation Flow Simulation
+End-to-end IAM decision logic
+"""
+
+def sts_evaluation(trust, identity, boundary, token_valid):
+    if not trust:
+        return "DENIED: Trust policy failed"
+    if not token_valid:
+        return "DENIED: Invalid STS token"
+    if not boundary:
+        return "DENIED: Permission boundary blocked"
+    if identity:
+        return "ALLOWED: All IAM checks passed"
+    return "DENIED: Identity policy missing allow"
+
+
+print("DAY 9 — STS EVALUATION FLOW")
+print("----------------------------")
+
+trust = input("Trust policy allows? (yes/no): ").lower() == "yes"
+identity = input("Identity policy allows? (yes/no): ").lower() == "yes"
+boundary = input("Permission boundary allows? (yes/no): ").lower() == "yes"
+token = input("STS token valid? (yes/no): ").lower() == "yes"
+
+print("\nFINAL DECISION:")
+print(sts_evaluation(trust, identity, boundary, token))
