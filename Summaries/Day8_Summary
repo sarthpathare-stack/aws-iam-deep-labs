@@ -1,0 +1,51 @@
+Day 8 — Permission Boundaries
+Why Permission Boundaries Exist
+
+Permission boundaries solve delegation problems.
+
+They prevent:
+
+Privilege escalation
+
+Over-permissioned roles
+
+Unsafe automation
+
+What Boundaries Do
+
+They:
+
+Do NOT grant permissions
+
+Only set maximum allowed permissions
+
+Effective permission =
+Identity Policy ∩ Permission Boundary
+
+Evaluation Logic
+
+Identity policy allows action
+
+Boundary allows action
+
+If boundary blocks → DENY
+
+Explicit deny still wins
+
+Common Misunderstanding
+
+“Boundary is an extra policy”
+
+Wrong.
+
+Boundary is a ceiling, not a permission source.
+
+Where Boundaries Are Used
+
+Secure role creation
+
+Dev teams creating IAM roles
+
+CI/CD pipelines
+
+Multi-team environments
