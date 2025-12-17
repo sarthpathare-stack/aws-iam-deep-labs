@@ -1,0 +1,82 @@
+📘 Day 16 — Deep Notes (Capstone Theory)
+Why This Day Matters
+
+Day 16 is where IAM stops being topics and becomes a system.
+
+Real AWS authorization is layered, not linear.
+Missing any layer breaks access.
+
+The Full IAM Authorization Stack
+
+AWS evaluates permissions in layers, not policies.
+
+Simplified but accurate order:
+
+SCPs (Organization guardrails)
+Trust Policy (Who can become the role)
+STS Token Validity (Session security)
+Permission Boundary (Maximum allowed scope)
+Identity Policy (What the principal allows)
+Resource Policy (What the resource trusts)
+Fail anywhere → DENY
+
+Why SCPs Come First
+SCPs act as account-level firewalls.
+They do not grant permissions
+They define what is never allowed
+They override everything below
+If SCP denies → no IAM debugging below matters.
+Trust Is Not Permission
+Trust policies answer only one question:
+Can you become this role?
+
+They do not:
+Grant API permissions
+Allow service actions
+Passing trust just gets you inside the role, nothing more.
+
+STS Is a GNNatekeeper
+STS does not decide what you can do.
+
+It decides:
+Whether your session is valid
+Whether your access still exists
+Expired token = hard stop.
+
+Permission Boundaries Are Ceilings
+
+Permission boundaries:
+Never grant access
+Only limit maximum permissions
+Even AdministratorAccess fails if boundary blocks it.
+Identity vs Resource Policy
+Final access usually requires:
+Identity policy allows
+AND
+Resource policy trusts (especially cross-account)
+One-sided allow is not enough.
+The Golden IAM Rule
+Explicit deny at ANY layer = final deny
+
+This never changes.
+No exception.
+No override.
+
+How to Debug IAM Correctly
+Never ask:
+“Why is this not allowed?”
+Always ask:
+“Which layer denied this request?”
+Then walk top → bottom.
+
+🎓 Final Takeaway (End of IAM Journey)
+
+IAM is not complicated.
+It is strict, layered, and logical.
+Most IAM problems are not permission problems —
+they are mental model problems.
+You now have the correct model.
+
+⚠️ Important Note
+This code is NOT production-grade.
+It is a learning simulation created to prove and reinforce end-to-end IAM authorization understanding programmatically.
