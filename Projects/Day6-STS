@@ -1,0 +1,20 @@
+"""
+Day 6 - STS Temporary Credentials Simulation
+Learning-only simulation
+"""
+
+def validate_sts_credentials(token_valid, token_expired):
+    if not token_valid:
+        return "DENIED: Invalid STS token"
+    if token_expired:
+        return "DENIED: STS token expired"
+    return "ALLOWED: Temporary credentials valid"
+
+
+print("DAY 6 — STS CREDENTIAL VALIDATION")
+print("--------------------------------")
+
+valid = input("Is STS token valid? (yes/no): ").lower() == "yes"
+expired = input("Is STS token expired? (yes/no): ").lower() == "yes"
+
+print("\nRESULT:", validate_sts_credentials(valid, expired))
