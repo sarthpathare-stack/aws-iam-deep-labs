@@ -1,0 +1,19 @@
+"""
+Day 7 - IAM Access Analyzer Simulation
+Detecting unintended external access
+"""
+
+def analyze_access(resource_account, principal_account):
+    if resource_account != principal_account:
+        return "⚠️ FINDING: External access detected"
+    return "✅ OK: Access is internal"
+
+
+print("DAY 7 — IAM ACCESS ANALYZER")
+print("---------------------------")
+
+resource_account = input("Enter resource account ID: ")
+principal_account = input("Enter principal account ID: ")
+
+print("\nANALYSIS RESULT:")
+print(analyze_access(resource_account, principal_account))
