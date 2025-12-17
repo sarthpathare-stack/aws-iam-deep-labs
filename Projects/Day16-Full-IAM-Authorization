@@ -1,0 +1,57 @@
+"""
+Day 16 - Full IAM Authorization Evaluation Engine (Capstone)
+End-to-end IAM decision flow simulation
+NOT production-grade — learning purpose only
+"""
+
+def iam_authorization_engine(
+    scp_allows,
+    trust_policy_allows,
+    sts_token_valid,
+    permission_boundary_allows,
+    identity_policy_allows,
+    resource_policy_allows
+):
+    print("\nIAM AUTHORIZATION FLOW STARTED")
+    print("--------------------------------")
+
+    if not scp_allows:
+        return "DENIED: Blocked by SCP (Org-level control)"
+
+    if not trust_policy_allows:
+        return "DENIED: Trust policy failed (Role cannot be assumed)"
+
+    if not sts_token_valid:
+        return "DENIED: STS token invalid or expired"
+
+    if not permission_boundary_allows:
+        return "DENIED: Permission boundary blocked the action"
+
+    if not identity_policy_allows:
+        return "DENIED: Identity policy missing allow"
+
+    if not resource_policy_allows:
+        return "DENIED: Resource policy did not allow access"
+
+    return "ALLOWED: All IAM authorization layers passed"
+
+
+print("=" * 60)
+print("DAY 16 — FULL IAM AUTHORIZATION ENGINE (CAPSTONE)")
+print("=" * 60)
+
+scp = input("Does SCP allow the action? (yes/no): ").lower() == "yes"
+trust = input("Does trust policy allow role assumption? (yes/no): ").lower() == "yes"
+sts = input("Is STS token valid? (yes/no): ").lower() == "yes"
+boundary = input("Does permission boundary allow the action? (yes/no): ").lower() == "yes"
+identity = input("Does identity policy allow the action? (yes/no): ").lower() == "yes"
+resource = input("Does resource policy allow access? (yes/no): ").lower() == "yes"
+
+decision = iam_authorization_engine(
+    scp, trust, sts, boundary, identity, resource
+)
+
+print("\nFINAL DECISION")
+print("--------------------------------")
+print(decision)
+print("=" * 60)
