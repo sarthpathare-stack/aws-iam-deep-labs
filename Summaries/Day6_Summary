@@ -1,0 +1,55 @@
+Day 6 — STS Temporary Credential Behavior
+What STS Really Does
+
+STS does NOT grant permissions.
+
+It only:
+
+Issues temporary credentials
+
+Enforces time-bound access
+
+Acts as a broker
+
+Properties of STS Credentials
+
+Expire automatically
+
+Cannot be renewed indefinitely
+
+Bound to role/session policies
+
+Safer than IAM users
+
+STS Is Always in the Middle
+
+Used in:
+
+AssumeRole
+
+Cross-account access
+
+SSO
+
+Federation
+
+EKS, ECS, Lambda
+
+If STS fails → access fails.
+
+Common STS Failures
+
+Expired token
+
+Clock skew
+
+Invalid session name
+
+Blocked by SCP
+
+Missing trust condition
+
+Debugging Rule
+
+If access worked yesterday but fails today:
+Check token expiration first.
