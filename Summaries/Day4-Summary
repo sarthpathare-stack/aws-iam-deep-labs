@@ -1,1 +1,73 @@
+Day 4 — Resource-Based Policy Evaluation
+What Resource Policies Change
 
+Resource policies shift the permission model.
+
+Instead of:
+
+Who is allowed to access what?
+
+They ask:
+
+Who does this resource trust?
+
+This reverses the usual IAM mindset.
+
+Identity vs Resource Policies
+
+Identity policy → attached to principal (user/role)
+
+Resource policy → attached to resource (S3, KMS, SQS, Lambda)
+
+Both can grant permissions independently.
+
+Core Evaluation Logic
+
+Access is allowed only if BOTH sides agree.
+
+Rules:
+
+Start with implicit deny
+
+Identity policy must allow OR
+
+Resource policy must allow
+
+If either side explicitly denies → DENY
+
+Explicit deny always wins
+
+Cross-Account Access
+
+Resource policies are mandatory for cross-account access.
+
+Why:
+
+Identity policies cannot grant access to external accounts
+
+Resource must explicitly trust the external principal
+
+No resource policy → access denied, even if identity policy allows.
+
+Where Resource Policies Exist
+
+Common services:
+
+S3 buckets
+
+KMS keys
+
+SQS queues
+
+SNS topics
+
+Lambda functions
+
+ECR repositories
+
+Debugging Rule
+
+If permissions look correct but still fail:
+Check the resource policy.
+
+Most IAM failures here are missing trust, not missing allow.
